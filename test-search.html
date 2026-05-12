@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PartsHunter Search Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .search-container { margin-bottom: 20px; }
+        input { padding: 10px; margin: 5px; width: 200px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .part-item { border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .part-name { font-weight: bold; }
+        .part-price { color: green; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h1>PartsHunter - Search Test</h1>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for parts (try 'brake pads')" />
+        <button onclick="searchParts()">Search</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        const mockParts = [
+            // Brake System
+            { id: 1, name: 'Brake Pads - Front', price: '£45.99', supplier: 'Eurocar Parts', compatibility: 'BMW 3 Series (E90)' },
+            { id: 2, name: 'Brake Pads - Rear', price: '£38.99', supplier: 'GSF Car Parts', compatibility: 'BMW 3 Series (E90)' },
+            { id: 3, name: 'Brake Discs - Front', price: '£89.99', supplier: 'eBay Motors', compatibility: 'BMW 3 Series (E90)' },
+            { id: 4, name: 'Brake Discs - Rear', price: '£76.50', supplier: 'Eurocar Parts', compatibility: 'BMW 3 Series (E90)' },
+            { id: 5, name: 'Brake Fluid DOT 4', price: '£8.99', supplier: 'GSF Car Parts', compatibility: 'Universal' },
+            
+            // Engine & Filters
+            { id: 6, name: 'Oil Filter', price: '£12.99', supplier: 'GSF Car Parts', compatibility: 'BMW 3 Series (E90)' },
+            { id: 7, name: 'Air Filter', price: '£18.50', supplier: 'eBay Motors', compatibility: 'BMW 3 Series (E90)' },
+            { id: 8, name: 'Fuel Filter', price: '£22.99', supplier: 'Eurocar Parts', compatibility: 'BMW 3 Series (E90)' },
+            
+            // Ignition System
+            { id: 11, name: 'Spark Plugs Set', price: '£28.99', supplier: 'Eurocar Parts', compatibility: 'BMW 3 Series (E90)' },
+            { id: 12, name: 'Ignition Coils', price: '£125.00', supplier: 'GSF Car Parts', compatibility: 'BMW 3 Series (E90)' },
+        ];
+
+        function searchParts() {
+            const query = document.getElementById('searchInput').value.trim();
+            const resultsDiv = document.getElementById('results');
+            
+            if (!query) {
+                resultsDiv.innerHTML = '<p>Please enter a search term</p>';
+                return;
+            }
+
+            console.log('Searching for:', query);
+            
+            const filtered = mockParts.filter(part =>
+                part.name.toLowerCase().includes(query.toLowerCase()) ||
+                part.compatibility.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            console.log('Found results:', filtered);
+
+            if (filtered.length === 0) {
+                resultsDiv.innerHTML = '<p>No parts found. Try searching for: brake, oil, air, spark</p>';
+                return;
+            }
+
+            let html = '<h3>Search Results:</h3>';
+            filtered.forEach(part => {
+                html += `
+                    <div class="part-item">
+                        <div class="part-name">${part.name}</div>
+                        <div class="part-price">${part.price}</div>
+                        <div>Supplier: ${part.supplier}</div>
+                        <div>Compatible: ${part.compatibility}</div>
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        // Test search on page load
+        window.onload = function() {
+            document.getElementById('searchInput').value = 'brake pads';
+            searchParts();
+        };
+    </script>
+</body>
+</html>
